@@ -1,0 +1,22 @@
+name: superagent-ping
+on:
+  workflow_dispatch:
+    inputs:
+      text:
+        description: Comment body
+        required: true
+      issue:
+        description: Issue number
+        required: true
+        default: "1"
+permissions:
+  issues: write
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BODY: ${{ inputs.text }}
+          ISSUE: ${{ inputs.issue }}
+        run: gh issue comment "$ISSUE" --repo "$GITHUB_REPOSITORY" --body "$BODY"
